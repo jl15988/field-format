@@ -37,7 +37,7 @@ export class FieldBase {
      * 请求参数
      * @protected
      */
-    protected requestParams: any;
+    protected requestParams: JSONData<any>;
     /**
      * 响应后数据的key值
      * @protected
@@ -62,12 +62,12 @@ export class FieldBase {
      * 自定义的数据
      * @protected
      */
-    protected customData: JSONData<any>;
+    protected customData: any;
     /**
      * 用于自定义渲染操作，参数为(data, list)，data为当前数据项，list为全部数据列表
      * @protected
      */
-    protected render: undefined | ((data: any, list: any[]) => string);
+    protected $render: undefined | ((data: any, list: any[]) => string);
     /**
      * tag属性，用以匹配el-tag样式
      * @protected

@@ -1,7 +1,7 @@
 <template>
   <span>
-    <template v-if="!hasSlot && !tag && !tags && !tagTypes">{{ labelValue }}</template>
-    <el-tag v-if="!hasSlot && labelValue && (tag || tags || tagTypes)" :type="tagType">{{ labelValue }}</el-tag>
+    <template v-if="defaultShow">{{ labelValue }}</template>
+    <el-tag v-if="tagShow" :type="tagType">{{ labelValue }}</el-tag>
     <slot></slot>
     <slot name="format" :data="data"></slot>
     <slot name="list" :list="list"></slot>
@@ -20,6 +20,10 @@ export default {
      * 用于匹配的值
      */
     value: [String, Number],
+    /**
+     * 当前数据
+     */
+    row: Object,
     /**
      * 要格式化的类型
      */
@@ -64,6 +68,22 @@ export default {
     }
   },
   computed: {
+    defaultShow() {
+      if (!this.hasSlot) {
+        if ((!this.tag && !this.tags && !this.tagTypes) || this.closeTag) {
+          return true;
+        }
+      }
+      return false;
+    },
+    tagShow() {
+      if (!this.hasSlot) {
+        if (this.labelValue && (this.tag || this.tags || this.tagTypes) && !this.closeTag) {
+          return true;
+        }
+      }
+      return false;
+    },
     fieldFormats() {
       // 获取缓存的数据
       return this.$fieldFormat.cacheTypes;
@@ -75,8 +95,19 @@ export default {
     },
     labelValue() {
       if (this.render) {
-        return this.render(this.data, this.list);
-      } else if (this.isCustom && !this.id) {
+        const params = {
+          data: this.data,
+          list: this.list,
+          row: this.row,
+          customData: this.customData,
+          value: this.value
+        }
+        if (this.isCustom && !this.isCustomArray) {
+          // 如果是自定义数据，且不是数组类型，则重新定义data
+          params.data = this.customData[this.value];
+        }
+        return this.render(params);
+      } else if (this.isCustom && !this.isCustomArray) {
         return this.customData[this.value];
       } else if (this.data && this.label) {
         return this.data[this.label];
@@ -97,6 +128,13 @@ export default {
       } else {
         return "";
       }
+    },
+    /**
+     * 是否为自定义数组类型
+     * @returns {boolean}
+     */
+    isCustomArray() {
+      return this.isCustom && this.id && this.customData instanceof Array;
     }
   },
   watch: {
@@ -119,7 +157,8 @@ export default {
      */
     format() {
       // 在列表中查找对应数据
-      if (this.isCustom && this.id) {
+      if (this.isCustomArray) {
+        // 如果是自定义的，有id，且自定义数据为数组，则直接赋值list走统一逻辑
         this.list = this.customData;
       }
 

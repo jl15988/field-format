@@ -169,21 +169,21 @@ export default class Dict extends FieldBase {
 ### 1. 格式化
 在需要格式化的地方，使用组件 field-format，value为已知数据值， type 为 formatOptions 中添加的名称，另外还有 params 字段用于请求自定义传参
 ```vue
-<field-format :value="form.vehicleType" type="vehicleType"></field-format>
+<ln-field-format :value="form.vehicleType" type="vehicleType"></ln-field-format>
 ```
 
 ### 2. 自定义插槽
 可以使用插槽实现更多场景的功能，如
 ```html
-<field-format :value="form.vehicleType" type="vehicleType">
+<ln-field-format :value="form.vehicleType" type="vehicleType">
   <template #format="{data}">{{ data.name }}</template>
-</field-format>
+</ln-field-format>
 ```
 
 ### 3. 遍历
 或者获取所有列表，用于遍历
 ```html
-<field-format type="vehicleType">
+<ln-field-format type="vehicleType">
     <template #list="{list}">
       <el-select v-model="form.vehicleType">
         <el-option
@@ -194,7 +194,7 @@ export default class Dict extends FieldBase {
         ></el-option>
       </el-select>
     </template>
-  </field-format>
+  </ln-field-format>
 </el-form-item>
 ```
 

@@ -11,7 +11,7 @@ const fieldFormat = formatDiplomat.create({
         }),
     // 车辆类型（全路径）
     vehicleTypeFull: new Field('/bayonet/vehicleType/listAll', "vehicleTypeId", "name")
-        .renders((data, list) => {
+        .renders(({data, list}) => {
             if (!data || !data.name) {
                 return "";
             }
@@ -23,12 +23,14 @@ const fieldFormat = formatDiplomat.create({
                 if (!row.parentId) {
                     return;
                 }
-                const vehicleType = list.find(item => item.vehicleTypeId === row.parentId);
-                if (vehicleType && vehicleType.name) {
-                    names.push(vehicleType.name);
-                }
-                if (vehicleType && list.filter(item => item.vehicleTypeId === vehicleType.parentId).length > 0) {
-                    findParent(vehicleType);
+                if (list) {
+                    const vehicleType = list.find(item => item.vehicleTypeId === row.parentId);
+                    if (vehicleType && vehicleType.name) {
+                        names.push(vehicleType.name);
+                    }
+                    if (vehicleType && list.filter(item => item.vehicleTypeId === vehicleType.parentId).length > 0) {
+                        findParent(vehicleType);
+                    }
                 }
             }
 
@@ -46,7 +48,7 @@ const fieldFormat = formatDiplomat.create({
     baseUrl: 'http://192.168.0.130:8089/api-docs'
 });
 
-const token = "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjdlZTFhZTNiLWFhOGItNGI0YS05M2JjLTA4NDdiOTIzZjQ1ZiJ9.rRZ0zoBGbkxipgnZzc4paVPVfHHIJ4lLNVlQkU1pp1IUD1CrY43xdklCq9yOIYxw0OfV9r_rFAlFH9In_K4j-Q";
+const token = "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjE2MGZiMzY2LTM4MGQtNGM3NS1iNWE1LThlZmM4ZmViNjlhZCJ9.oQgcD8ZIhEc58zO5zQwLXrPB84e4TeNneGd4P0TS1RGiHHYIf1Kv3cpuT8bofyb0WcSYN9N8yJ1Fbq7dY7Rb8A";
 fieldFormat.interceptors.request = (config) => {
     config.headers['Authorization'] = 'Bearer ' + token;
     return config;
