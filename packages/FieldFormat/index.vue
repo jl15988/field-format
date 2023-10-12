@@ -63,7 +63,7 @@ export default {
             class: undefined,
             isCustom: false,
             customData: undefined,
-            render: undefined,
+            renderField: undefined,
             tagTypes: undefined
         }
     },
@@ -94,7 +94,7 @@ export default {
                 || (this.$slots && (!!this.$slots.list || !!this.$slots.format));
         },
         labelValue() {
-            if (this.render) {
+            if (this.renderField) {
                 const params = {
                     data: this.data,
                     list: this.list,
@@ -106,7 +106,7 @@ export default {
                     // 如果是自定义数据，且不是数组类型，则重新定义data
                     params.data = this.customData ? this.customData[this.value] : "";
                 }
-                return this.render(params);
+                return this.renderField(params);
             } else if (this.isCustom && !this.isCustomArray) {
                 if (!this.customData) {
                     return "";

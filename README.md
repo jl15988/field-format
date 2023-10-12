@@ -29,7 +29,7 @@ import Vue from "vue";
 const fieldFormat = formatDiplomat.create({
     // 车辆类型（全路径）
     vehicleTypeFull: new Field('/bayonet/vehicleType/listAll', "vehicleTypeId", "name")
-        .renders((data, list) => {
+        .renders(({data, list}) => {
             if (!data || !data.name) {
                 return "";
             }
@@ -123,7 +123,7 @@ field-format 内置了 FieldBase、FieldCustom、Field 三种属性类，你也�
 import {FieldBase} from "field-format";
 
 export default class Dict extends FieldBase {
-    constructor(type: string) {
+    constructor(type) {
         super();
         this.serve = 'system/dict/data/dictType/' + type;
         this.id = "dictValue";

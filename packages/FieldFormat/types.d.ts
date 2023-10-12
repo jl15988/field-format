@@ -78,7 +78,7 @@ export class FieldBase {
      * 用于自定义渲染操作，参数为(data, list)，data为当前数据项，list为全部数据列表
      * @protected
      */
-    protected $render: undefined | ((params: renderParams) => string);
+    protected renderField: undefined | ((params: renderParams) => string);
     /**
      * tag属性，用以匹配el-tag样式
      * @protected

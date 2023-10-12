@@ -1,6 +1,6 @@
 {
     "name": "field-format",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "private": false,
     "main": "lib/field-format.common.js",
     "description": "A globally maintainable field formatting component.",

@@ -69,7 +69,7 @@ export default class FieldBase {
      * 用于自定义渲染操作，参数为(data, list)，data为当前数据项，list为全部数据列表
      * @protected
      */
-    protected $render: undefined | ((params: renderParams) => string);
+    protected renderField: undefined | ((params: renderParams) => string);
     /**
      * tag属性，用以匹配el-tag样式
      * @protected
@@ -87,7 +87,7 @@ export default class FieldBase {
         this.class = "";
         this.isCustom = false;
         this.customData = {};
-        this.$render = undefined;
+        this.renderField = undefined;
         this.tagTypes = undefined;
     }
 
@@ -105,7 +105,7 @@ export default class FieldBase {
      * @param render
      */
     renders(render: ((params: renderParams) => string)): FieldBase {
-        this.$render = render;
+        this.renderField = render;
         return this;
     }
 }
