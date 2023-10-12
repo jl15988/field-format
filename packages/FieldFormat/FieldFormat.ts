@@ -3,7 +3,7 @@ import FieldBase from "./FieldBase";
 import {Vue as _Vue} from "vue/types/vue";
 import relRequest from "./RelRequest";
 import {PluginFunction} from "vue";
-import LnFieldFormat from "./LnFieldFormat";
+import LnFieldFormat from "./index.vue";
 
 interface RequestInterceptors {
     request: ((config: InternalAxiosRequestConfig<any>) => (Promise<InternalAxiosRequestConfig<any>> | InternalAxiosRequestConfig<any>)) | null,

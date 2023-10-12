@@ -1,6 +1,6 @@
 import {Component, Prop, Vue, Watch} from 'vue-property-decorator';
-import ElTag from "./tag.vue";
-import {JSONData, renderParams, TagType} from "./FieldBase";
+import ElTag from "../tag.vue";
+import {JSONData, renderParams, TagType} from "../FieldBase";
 import {AxiosResponse} from "axios";
 
 @Component({
@@ -14,7 +14,7 @@ export default class LnFieldFormat extends Vue {
     /**
      * 用于匹配的值
      */
-    @Prop([String, Number]) private value: string | number = '';
+    @Prop([String, Number]) private value!: string | number;
     /**
      * 当前数据
      */
@@ -100,10 +100,13 @@ export default class LnFieldFormat extends Vue {
             }
             if (this.isCustom && !this.isCustomArray) {
                 // 如果是自定义数据，且不是数组类型，则重新定义data
-                params.data = this.customData[this.value];
+                params.data = this.customData ? this.customData[this.value] : "";
             }
             return this.$render(params);
         } else if (this.isCustom && !this.isCustomArray) {
+            if (!this.customData) {
+                return "";
+            }
             return this.customData[this.value];
         } else if (this.fieldData && this.label) {
             return this.fieldData[this.label];
@@ -132,7 +135,7 @@ export default class LnFieldFormat extends Vue {
      * @returns {boolean}
      */
     get isCustomArray() {
-        return this.isCustom && this.id && this.customData instanceof Array;
+        return this.isCustom && this.id && this.customData && this.customData instanceof Array;
     }
 
     @Watch('type')
@@ -172,7 +175,19 @@ export default class LnFieldFormat extends Vue {
         // @ts-ignore
         const option = this.$fieldFormat.options[this.type];
         // 赋值属性
-        Object.assign(this.$data, option);
+        this.serve = option.serve;
+        this.id = option.id;
+        this.label = option.label;
+        this.method = option.method;
+        this.requestParams = option.requestParams;
+        this.responseKey = option.responseKey;
+        this.dataField = option.dataField;
+        this.class = option.class;
+        this.isCustom = option.isCustom;
+        this.customData = option.customData;
+        this.$render = option.$render;
+        this.tagTypes = option.tagTypes;
+        // Object.assign(this.$data, option);
         return option.serve;
     }
 

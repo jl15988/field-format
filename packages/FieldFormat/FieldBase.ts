@@ -12,7 +12,7 @@ export interface renderParams {
     value: string | number | undefined
 }
 
-export type TagType = 'primary' | 'gray' | 'success' | 'warning' | 'danger'
+export type TagType = 'primary' | 'gray' | 'success' | 'warning' | 'danger';
 
 export default class FieldBase {
     /**

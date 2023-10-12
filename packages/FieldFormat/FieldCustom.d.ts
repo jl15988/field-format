@@ -1,7 +1,7 @@
-import FieldBase, { JSONData } from "./FieldBase";
+import FieldBase from "./FieldBase";
 /**
  * 自定义数据
  */
 export default class FieldCustom extends FieldBase {
-    constructor(data: JSONData<any>, id?: string, label?: string);
+    constructor(data: any, id?: string, label?: string);
 }

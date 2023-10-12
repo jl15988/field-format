@@ -30,12 +30,12 @@
     ]
   },
   "include": [
-    "examples/**/*.ts",
-    "examples/**/*.tsx",
-    "examples/**/*.vue",
     "packages/**/*.ts",
     "packages/**/*.tsx",
     "packages/**/*.vue",
+    "examples/**/*.ts",
+    "examples/**/*.tsx",
+    "examples/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx",
     "*.ts"

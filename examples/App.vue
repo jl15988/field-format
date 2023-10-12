@@ -1,6 +1,11 @@
 <template>
   <div id="app">
     <ln-field-format type="passStatus" :value="1"></ln-field-format>
+      <ln-field-format type="passStatus">
+          <template #list="data">
+              {{data}}
+          </template>
+      </ln-field-format>
   </div>
 </template>
 

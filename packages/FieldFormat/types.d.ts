@@ -1,23 +1,34 @@
 import {AxiosInstance, AxiosResponse, InternalAxiosRequestConfig} from "axios";
-import Vue, {PluginFunction} from "vue";
+import {PluginFunction} from "vue";
+import {Vue} from "vue-property-decorator";
 
 /**
  * 字段，用以匹配后端字段
  */
 export class Field extends FieldBase {
-    constructor(serve: string | Function, id?: string, label?: string, method?: string, dataField?: string);
+    constructor(serve: string | (() => Promise<AxiosResponse<any>>), id?: string, label?: string, method?: string, dataField?: string);
 }
 
 export interface JSONData<T> {
     [key: string]: T | any;
 }
 
+export interface renderParams {
+    data: any;
+    list: any[] | undefined;
+    row: object | undefined;
+    customData: any | undefined;
+    value: string | number | undefined;
+}
+
+export type TagType = 'primary' | 'gray' | 'success' | 'warning' | 'danger';
+
 export class FieldBase {
     /**
      * 请求地址或请求方法或枚举类型，请求方法可以是api中的，必须是Function: () => Promise格式
      * @protected
      */
-    protected serve: string | Function;
+    protected serve: string | (() => Promise<AxiosResponse<any>>);
     /**
      * 请求后的数据列表字段，用于匹配那一条数据
      * @protected
@@ -37,7 +48,7 @@ export class FieldBase {
      * 请求参数
      * @protected
      */
-    protected requestParams: JSONData<any>;
+    protected requestParams: JSONData<any> | undefined;
     /**
      * 响应后数据的key值
      * @protected
@@ -67,7 +78,7 @@ export class FieldBase {
      * 用于自定义渲染操作，参数为(data, list)，data为当前数据项，list为全部数据列表
      * @protected
      */
-    protected $render: undefined | ((data: any, list: any[]) => string);
+    protected $render: undefined | ((params: renderParams) => string);
     /**
      * tag属性，用以匹配el-tag样式
      * @protected
@@ -86,14 +97,14 @@ export class FieldBase {
      * 添加自定义渲染，传入函数，将渲染返回的内容
      * @param render
      */
-    renders(render: ((data: any, list: any[]) => string)): FieldBase;
+    renders(render: ((params: renderParams) => string)): FieldBase;
 }
 
 /**
  * 自定义数据
  */
 export class FieldCustom extends FieldBase {
-    constructor(data: JSONData<any>, id?: string, label?: string);
+    constructor(data: any, id?: string, label?: string);
 }
 
 interface RequestInterceptors {
@@ -172,38 +183,39 @@ export class FieldFormatDiplomat {
     create(options: FieldFormatOptions, attrs: FieldFormatAttr): FieldFormat;
 }
 
-export type TagType = 'primary' | 'gray' | 'success' | 'warning' | 'danger';
-
 export declare class LnFieldFormat extends Vue {
-    static install (vue: typeof Vue): void;
     /**
      * 用于匹配的值
      */
     value: string | number;
     /**
+     * 当前数据
+     */
+    row: object | undefined;
+    /**
      * 要格式化的类型
      */
-    type: string;
+    type: string | undefined;
     /**
      * 发起请求的额外参数
      */
-    params: JSONData<any>;
+    params: object | undefined;
     /**
      * 没有匹配的数据时，代替显示的内容
      */
-    alternate: string;
+    alternate: string | undefined;
     /**
      * 关闭Tag标签样式
      */
-    closeTag: boolean;
+    closeTag: boolean | undefined;
     /**
      * 要显示的Tag标签样式（默认的为default），见Element文档
      */
-    tag: TagType;
+    tag: TagType | undefined;
     /**
      * 按数据显示的Tag标签样式，数据值为key，样式为值
      */
-    tags: JSONData<TagType>;
+    tags: JSONData<TagType> | undefined;
 
     /**
      * 解析
@@ -214,7 +226,7 @@ export declare class LnFieldFormat extends Vue {
      * 获取参数
      * @returns {string|*}
      */
-    getOption(): any;
+    getOption(): string | (() => Promise<AxiosResponse<any>>);
 
     /**
      * 获取数据
@@ -226,10 +238,15 @@ export declare class LnFieldFormat extends Vue {
      */
     relRes(res: any): void;
 
-    cacheGet(): any;
+    cacheGet(): ((api: string, params: any) => Promise<any>);
 
-    cachePost(): any;
+    cachePost(): ((api: string, params: any) => Promise<any>);
 }
+
+declare const relRequest: (instance: FieldFormat) => void;
+export {
+    relRequest
+};
 
 declare const fieldFormat: FieldFormatDiplomat;
 export default fieldFormat;
