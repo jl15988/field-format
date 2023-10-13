@@ -3,8 +3,8 @@
     <template v-if="defaultShow">{{ labelValue }}</template>
     <el-tag v-if="tagShow" :type="tagType">{{ labelValue }}</el-tag>
     <slot></slot>
-    <slot name="format" :data="data"></slot>
-    <slot name="list" :list="list"></slot>
+    <slot name="format" :data="data || customData ? customData[value] : undefined"></slot>
+    <slot name="list" :list="list || customData"></slot>
   </span>
 </template>
 
@@ -52,7 +52,7 @@ export default {
     data() {
         return {
             data: undefined,
-            list: [],
+            list: undefined,
             serve: undefined,
             id: undefined,
             label: undefined,
