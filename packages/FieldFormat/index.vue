@@ -95,18 +95,14 @@ export default {
         },
         labelValue() {
             if (this.renderField) {
-                const params = {
-                    data: this.data,
-                    list: this.list,
-                    row: this.row,
-                    customData: this.customData,
-                    value: this.value
-                }
-                if (this.isCustom && !this.isCustomArray) {
-                    // 如果是自定义数据，且不是数组类型，则重新定义data
-                    params.data = this.customData ? this.customData[this.value] : "";
-                }
-                return this.renderField(params);
+                return this.renderField({
+                  // 如果是自定义数据，且不是数组类型，则重新定义data
+                  data: this.isCustom && !this.isCustomArray ? this.customData[this.value] : this.data,
+                  list: this.list,
+                  row: this.row,
+                  customData: this.customData,
+                  value: this.value
+                });
             } else if (this.isCustom && !this.isCustomArray) {
                 if (!this.customData) {
                     return "";
