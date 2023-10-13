@@ -1,4 +1,7 @@
 # field-format
+
+![](https://img.shields.io/badge/github-jl15988-000000?logo=github&link=https://github.com/jl15988) ![](https://img.shields.io/badge/github-field--format-000000?logo=github&link=https://github.com/jl15988/field-format) ![NPM](https://img.shields.io/npm/l/field-format) ![npm package minimized gzipped size (select exports)](https://img.shields.io/bundlejs/size/field-format) ![npm](https://img.shields.io/npm/v/field-format)
+
 A globally maintainable field formatting component.
 
 
